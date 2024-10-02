@@ -1,0 +1,424 @@
+<?php
+session_start();
+include 'db_conn.php';
+
+
+// Check if the user is logged in by checking if the 'email' session is set
+if (!isset($_SESSION['email'])) {
+    // If not logged in, redirect to the login page
+    header('Location: index');
+    exit();
+}
+?>
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-startbar="light" data-bs-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <title>Rizz | Rizz - Admin & Dashboard Template</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      content="Premium Multipurpose Admin & Dashboard Template"
+      name="description"
+    />
+    <meta content="" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico" />
+
+    <!-- App css -->
+    <link
+      href="assets/css/bootstrap.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/datatables.min.css">
+    <link rel="stylesheet" href="./assets/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="./assets/sweetalert.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" />
+    <style>
+      .error{
+        color: red;
+      }
+    </style>
+  </head>
+
+  <!-- Top Bar Start -->
+  <body>
+    <!-- Top Bar Start -->
+    <div class="topbar d-print-none">
+      <div class="container-xxl">
+        <nav
+          class="topbar-custom d-flex justify-content-between"
+          id="topbar-custom"
+        >
+          <ul
+            class="topbar-item list-unstyled d-inline-flex align-items-center mb-0"
+          >
+            <li>
+              <button class="nav-link mobile-menu-btn nav-icon" id="togglemenu">
+                <i class="iconoir-menu-scale"></i>
+              </button>
+            </li>
+            <li class="mx-3 welcome-text">
+              <h3 class="mb-0 fw-bold text-truncate">Good Morning, James!</h3>
+              <!-- <h6 class="mb-0 fw-normal text-muted text-truncate fs-14">Here's your overview this week.</h6> -->
+            </li>
+          </ul>
+          <ul
+            class="topbar-item list-unstyled d-inline-flex align-items-center mb-0"
+          >
+            <li class="topbar-item">
+              <a
+                class="nav-link nav-icon"
+                href="javascript:void(0);"
+                id="light-dark-mode"
+              >
+                <i class="icofont-moon dark-mode"></i>
+                <i class="icofont-sun light-mode"></i>
+              </a>
+            </li>
+
+            <li class="dropdown topbar-item">
+              <a
+                class="nav-link dropdown-toggle arrow-none nav-icon"
+                data-bs-toggle="dropdown"
+                href="ecommerce-index.html#"
+                role="button"
+                aria-haspopup="false"
+                aria-expanded="false"
+              >
+                <img
+                  src="assets/images/users/avatar-1.jpg"
+                  alt=""
+                  class="thumb-lg rounded-circle"
+                />
+              </a>
+              <div class="dropdown-menu dropdown-menu-end py-0">
+                <div
+                  class="d-flex align-items-center dropdown-item py-2 bg-secondary-subtle"
+                >
+                  <div class="flex-shrink-0">
+                    <img
+                      src="assets/images/users/avatar-1.jpg"
+                      alt=""
+                      class="thumb-md rounded-circle"
+                    />
+                  </div>
+                  <div class="flex-grow-1 ms-2 text-truncate align-self-center">
+                    <h6 class="my-0 fw-medium text-dark fs-13">
+                      William Martin
+                    </h6>
+                    <small class="text-muted mb-0">Front End Developer</small>
+                  </div>
+                  <!--end media-body-->
+                </div>
+                <div class="dropdown-divider mt-0"></div>
+
+                <small class="text-muted px-2 py-1 d-block">Settings</small>
+                <a class="dropdown-item" href="pages-profile.html"
+                  ><i class="las la-cog fs-18 me-1 align-text-bottom"></i
+                  >Account Settings</a
+                >
+                <a class="dropdown-item" href="pages-profile.html"
+                  ><i class="las la-lock fs-18 me-1 align-text-bottom"></i>
+                  Security</a
+                >
+                <div class="dropdown-divider mb-0"></div>
+                <a class="dropdown-item text-danger" href="logout.php"
+                  ><i class="las la-power-off fs-18 me-1 align-text-bottom"></i>
+                  Logout</a
+                >
+              </div>
+            </li>
+          </ul>
+          <!--end topbar-nav-->
+        </nav>
+        <!-- end navbar-->
+      </div>
+    </div>
+    <!-- Top Bar End -->
+    <!-- leftbar-tab-menu -->
+    <div class="startbar d-print-none">
+      <!--start brand-->
+      <div class="brand">
+        <a href="index.html" class="logo">
+          <span>
+            <img
+              src="assets/images/logo-sm.png"
+              alt="logo-small"
+              class="logo-sm"
+            />
+          </span>
+          <span class="">
+            <img
+              src="assets/images/logo-light.png"
+              alt="logo-large"
+              class="logo-lg logo-light"
+            />
+            <img
+              src="assets/images/logo-dark.png"
+              alt="logo-large"
+              class="logo-lg logo-dark"
+            />
+          </span>
+        </a>
+      </div>
+      <!--end brand-->
+      <!--start startbar-menu-->
+      <div class="startbar-menu">
+        <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
+          <div class="d-flex align-items-start flex-column w-100">
+            <!-- Navigation -->
+            <ul class="navbar-nav mb-auto w-100">
+              <li class="nav-item">
+                <a class="nav-link" href="dashboard">
+                  <i class="bx bxs-dashboard menu-icon"></i>
+                  <span>Dashboards</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="user">
+                  <i class="bx bxs-user-rectangle menu-icon"></i>
+                  <span>User Managment</span>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="ecommerce-index.html#sidebarDashboards"
+                  data-bs-toggle="collapse"
+                  role="button"
+                  aria-expanded="false"
+                  aria-controls="sidebarDashboards"
+                >
+                  <i class='bx bxs-group menu-icon'></i>
+                  <span>People</span>
+                </a>
+                <div class="collapse" id="sidebarDashboards">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a class="nav-link" href="customers">Customers</a>
+                    </li>
+                    <!--end nav-item-->
+                    <li class="nav-item">
+                      <a class="nav-link" href="suppliers">Suppliers</a>
+                    </li>
+                    <!--end nav-item-->
+                  </ul>
+                  <!--end nav-->
+                </div>
+                <!--end startbarDashboards-->
+              </li>
+
+             
+
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="ecommerce-index.html#product"
+                  data-bs-toggle="collapse"
+                  role="button"
+                  aria-expanded="false"
+                  aria-controls="stock"
+                >
+                
+                <i class="bx bxl-product-hunt menu-icon"></i>
+                
+                  <span>Products</span>
+                </a>
+                <div class="collapse" id="product">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a class="nav-link" href="category"
+                        >Category</a
+                      >
+                    </li>
+                    <!--end nav-item-->
+                    <li class="nav-item">
+                      <a class="nav-link" href="products"
+                        >All Products</a
+                      >
+                    </li>
+
+                    <li class="nav-item">
+                      <a class="nav-link" href="units"
+                        >Units</a
+                      >
+                    </li>
+
+                
+                    <!--end nav-item-->
+                  </ul>
+                  <!--end nav-->
+                </div>
+                <!--end startbarDashboards-->
+              </li>
+
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="ecommerce-index.html#stock"
+                  data-bs-toggle="collapse"
+                  role="button"
+                  aria-expanded="false"
+                  aria-controls="stock"
+                >
+                  <i class="bx bxs-store-alt menu-icon"></i>
+                  <span>Stock </span>
+                </a>
+                <div class="collapse" id="stock">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a class="nav-link" href="stock_levels">Stock Managment</a>
+                    </li>
+                    <!--end nav-item-->
+                    <li class="nav-item">
+                      <a class="nav-link" href="low_stock">Low Stock <span class="badge bg-danger">4</span></a>
+
+                    </li>
+                    <!--end nav-item-->
+                    <li class="nav-item">
+                      <a class="nav-link" href="expired_stock">Expired Stock <span class="badge bg-danger">4</span></a>
+                    </li>
+                  </ul>
+                  <!--end nav-->
+                </div>
+                <!--end startbarDashboards-->
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="purchases">
+                  <i class='bx bxs-purchase-tag menu-icon' ></i>
+                  <span>Purchases</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="sales">
+                  <i class='bx bxs-dollar-circle menu-icon' ></i>
+                  <span>Sales</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="sales_returned">
+                  <i class='bx bx-money-withdraw menu-icon' ></i>
+                  <span>Sales Returned</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="purchase_returned">
+                  <i class='bx bxs-purchase-tag-alt menu-icon' ></i>
+                  <span>Purchase Returned</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="ecommerce-index.html#sales"
+                  data-bs-toggle="collapse"
+                  role="button"
+                  aria-expanded="false"
+                  aria-controls="sales"
+                >
+                  <i class='bx bx-money menu-icon' ></i>
+                  <span>Accounting</span>
+                </a>
+                <div class="collapse" id="sales">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a class="nav-link" href="account"
+                        >Account</a
+                      >
+                    </li>
+                    <!--end nav-item-->
+                    <li class="nav-item">
+                      <a class="nav-link" href="deposit">Deposit</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="expenses">Expenses</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="payment_method">Payment Methods</a>
+                    </li>
+                    <!--end nav-item-->
+                  </ul>
+                  <!--end nav-->
+                </div>
+                <!--end startbarDashboards-->
+              </li>
+
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="ecommerce-index.html#report"
+                  data-bs-toggle="collapse"
+                  role="button"
+                  aria-expanded="false"
+                  aria-controls="report"
+                >
+                  <i class="bx bxs-report menu-icon"></i>
+                  <span>Reports </span>
+                </a>
+                <div class="collapse" id="report">
+                  <ul class="nav flex-column">
+                    
+                    <!--end nav-item-->
+                    <li class="nav-item">
+                      <a class="nav-link" href="sales_report"
+                        >Sales Report</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="purchase_report"
+                        >Purchase Report</a
+                      >
+                    </li>
+                    
+                    <li class="nav-item">
+                      <a class="nav-link" href="payment_sale_report"
+                        >Payment Sale</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="payment_purchase_report"
+                        >Payment Purchase</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="payment_sales_return"
+                        >Payment Sales Return</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="payment_purchase_return"
+                        >Payment Purchase Return</a
+                      >
+                    </li>
+                    <!--end nav-item-->
+                  </ul>
+                  <!--end nav-->
+                </div>
+                <!--end startbarDashboards-->
+              </li>
+
+              <!--end nav-item-->
+            </ul>
+            <!--end navbar-nav--->
+          </div>
+        </div>
+        <!--end startbar-collapse-->
+      </div>
+      <!--end startbar-menu-->
+    </div>
+    <!--end startbar-->
+    <div class="startbar-overlay d-print-none"></div>
+    <!-- end leftbar-tab-menu-->
