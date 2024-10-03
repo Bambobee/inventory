@@ -2,9 +2,28 @@
    include 'header.php';
 ?>
     <div class="page-wrapper">
+   
       <!-- Page Content-->
       <div class="page-content">
+      <?php
+          // Check if there are any success or error messages in the session
+
+          if (isset($_SESSION['success'])) {
+              echo "
+              <div class='alert alert-success alert-dismissible fade show' role='alert'>" . $_SESSION['success'] . "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
+              unset($_SESSION['success']); // Clear the message
+          }
+
+          if (isset($_SESSION['error'])) {
+              echo "
+              <div class='alert alert-danger alert-dismissible fade show' role='alert'>" . $_SESSION['error'] . "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
+              unset($_SESSION['error']); // Clear the message
+          }
+          ?>
         <div class="container-xxl">
+
           <div class="row">
             <div class="col-md-12 col-lg-6 col-xl-4">
               <div class="card">
