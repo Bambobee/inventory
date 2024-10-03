@@ -5,6 +5,23 @@
         <!-- Page Content-->
         <div class="page-content">
             <div class="container-xxl"> 
+            <?php
+          // Check if there are any success or error messages in the session
+
+          if (isset($_SESSION['success'])) {
+              echo "
+              <div class='alert alert-success alert-dismissible fade show' role='alert'>" . $_SESSION['success'] . "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
+              unset($_SESSION['success']); // Clear the message
+          }
+
+          if (isset($_SESSION['error'])) {
+              echo "
+              <div class='alert alert-danger alert-dismissible fade show' role='alert'>" . $_SESSION['error'] . "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
+              unset($_SESSION['error']); // Clear the message
+          }
+          ?>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -86,20 +103,21 @@
                         </div>
                         <div class="modal-body">
                             <form id="form-validation-2" class="form">
-                                <div class="mb-2">
-                                    <label class="form-label">Account Name</label>
-                                    <input class="form-control" type="text"  placeholder="Enter Account Name">
-                                    <small>Error Message</small>
+                            <div class="mb-2">
+                                    <label class="form-label">Account Number</label>
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected>Open this select menu</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                      </select>
                                 </div>
                                  <div class="mb-2">
                                     <label class="form-label">Amount</label>
                                     <input class="form-control" type="number"  placeholder="Enter Amount">
-                                    <small>Error Message</small>
                                 </div>
                                 <div class="mb-2">
                                     <label  class="form-label">Date</label>
                                     <input class="form-control" type="date"  placeholder="Select Date">
-                                    <small>Error Message</small>
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label">Payment Type</label>
@@ -108,17 +126,14 @@
                                         <option value="1">One</option>
                                         <option value="2">Two</option>
                                       </select>
-                                    <small>Error Message</small>
                                 </div>
                                 <div class="mb-2">
                                     <label  class="form-label">Proof File</label>
                                     <input class="form-control" type="file"  placeholder="Select Date">
-                                    <small>Error Message</small>
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label"> Description</label>
                                     <textarea name="" class="form-control" id=""></textarea>
-                                    <small>Error Message</small>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit form</button>
                             </form>

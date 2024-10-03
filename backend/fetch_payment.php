@@ -3,7 +3,7 @@
 include __DIR__ . '/../db_conn.php';
 
 // Function to fetch users
-function fetchUsers($conn) {
+function fetchPayment($conn) {
     try {
         $stmt = $conn->prepare("SELECT * FROM payment_method");
         $stmt->execute();
@@ -15,5 +15,5 @@ function fetchUsers($conn) {
 }
 
 // Fetch user data
-$payment_methods = fetchUsers($conn) ?? [];
+$payment_methods = fetchPayment($conn) ?? [];
 ?>
