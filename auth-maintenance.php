@@ -38,7 +38,7 @@
                                         <h6 class="mb-2 fw-medium text-dark fs-24">We are down on maintenance right now</h6>
                                         <p class="text-muted mb-0 text-wrap fs-15">This website is currently undergoing Scheduled maintenance.</p>
                                         <div class="mt-3 text-center">
-                                            <a class="btn btn-primary w-50" href="index.html">Back to Dashboard <i class="fas fa-redo ms-1"></i></a> 
+                                            <a class="btn btn-primary w-50" href="dashboard">Back to Dashboard <i class="fas fa-redo ms-1"></i></a> 
                                         </div>
                                     </div> 
                                 </div><!--end card-body-->

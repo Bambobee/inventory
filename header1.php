@@ -1,15 +1,4 @@
-<?php
-session_start();
-include 'db_conn.php';
 
-$email = $_SESSION['email'];
-// Check if the user is logged in by checking if the 'email' session is set
-if (!isset($_SESSION['email'])) {
-    // If not logged in, redirect to the login page
-    header('Location: index');
-    exit();
-}
-?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr" data-startbar="light" data-bs-theme="light">
 

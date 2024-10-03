@@ -1,13 +1,43 @@
-
 <?php
-   include 'header.php';
+session_start();
+include 'db_conn.php';
+
+// Check if the user is logged in by checking if the 'email' session is set
+if (!isset($_SESSION['email'])) {
+    // If not logged in, redirect to the login page
+    header('Location: index');
+    exit();
+} else {
+    $email = $_SESSION['email'];
+
+    // Fetch user role from the database
+    $stmt = $conn->prepare("SELECT role FROM users WHERE email = :email");
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Check if user was found
+    if ($user) {
+        $role = $user['role'];
+
+        // Redirect if the user is not an Admin
+        if ($role !== 'Admin') {
+            header('Location: auth-maintenance');
+            exit();
+        }
+    } else {
+        // Handle case if no user found (optional)
+        header('Location: index');
+        exit();
+    }
+}
+?>
+<?php
+   include 'header1.php';
 ?>
 <div class="page-wrapper">
 
-
 <!-- Your HTML Form here -->
-
-
     <!-- Page Content-->
     <div class="page-content">
         <div class="container-xxl">
@@ -176,6 +206,7 @@
     </div>
 </div>
 
+
 <script src="./jquery/jquery-3.6.1.min.js"></script>
 <script src="./jquery/jquery.validate.min.js"></script>
 <script>
@@ -263,5 +294,6 @@
         });
     })
 </script>
+
 
       <?php include 'footer.php' ?>
