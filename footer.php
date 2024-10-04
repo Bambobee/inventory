@@ -135,7 +135,11 @@
         responsive: true,
     });
     </script>
-
+<script>
+    new DataTable('#category', {
+        responsive: true,
+    });
+    </script>
 </body>
 <!--end body-->
 
