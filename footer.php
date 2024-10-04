@@ -15,7 +15,7 @@
                             <span class="text-muted d-none d-sm-inline-block float-end">
                                 Crafted with
                                 <i class="iconoir-heart text-danger"></i>
-                                by Mannatthemes</span>
+                                by Denzal</span>
                         </p>
                     </div>
                 </div>
@@ -130,7 +130,11 @@
         responsive: true,
     });
     </script>
-
+<script>
+    new DataTable('#supplier', {
+        responsive: true,
+    });
+    </script>
 
 </body>
 <!--end body-->
