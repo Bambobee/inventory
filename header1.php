@@ -22,6 +22,13 @@
     <link rel="stylesheet" href="./assets/responsive.dataTables.min.css">
     <link rel="stylesheet" href="./assets/sweetalert.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" />
+
+    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.bootstrap5.css">
+
+    <link href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css" rel="stylesheet" />
     <style>
     .error {
         color: red;
@@ -435,7 +442,12 @@
                             </a>
                             <div class="collapse" id="report">
                                 <ul class="nav flex-column">
-
+                                <li class="nav-item">
+                                        <a class="nav-link" href="sales_report">Expenses Report</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="purchase_report">Deposit Report</a>
+                                    </li>
                                     <!--end nav-item-->
                                     <li class="nav-item">
                                         <a class="nav-link" href="sales_report">Sales Report</a>

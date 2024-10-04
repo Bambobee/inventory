@@ -446,7 +446,12 @@ if (!isset($_SESSION['email'])) {
                             </a>
                             <div class="collapse" id="report">
                                 <ul class="nav flex-column">
-
+                                <li class="nav-item">
+                                        <a class="nav-link" href="sales_report">Expenses Report</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="purchase_report">Deposit Report</a>
+                                    </li>
                                     <!--end nav-item-->
                                     <li class="nav-item">
                                         <a class="nav-link" href="sales_report">Sales Report</a>

@@ -1,4 +1,38 @@
-<?php include 'header.php'; ?>
+<?php
+session_start();
+include 'db_conn.php';
+
+// Check if the user is logged in by checking if the 'email' session is set
+if (!isset($_SESSION['email'])) {
+    // If not logged in, redirect to the login page
+    header('Location: index');
+    exit();
+} else {
+    $email = $_SESSION['email'];
+
+    // Fetch user role from the database
+    $stmt = $conn->prepare("SELECT role FROM users WHERE email = :email");
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Check if user was found
+    if ($user) {
+        $role = $user['role'];
+
+        // Redirect if the user is not an Admin
+        if ($role !== 'Admin') {
+            header('Location: auth-maintenance');
+            exit();
+        }
+    } else {
+        // Handle case if no user found (optional)
+        header('Location: index');
+        exit();
+    }
+}
+?>
+<?php include 'header1.php'; ?>
 
 <div class="page-wrapper">
 
@@ -29,7 +63,28 @@
                             <div class="row align-items-center">
                                 <div class="col">
                                     <h4 class="card-title">Expenses List</h4> <br>
-                                    <h4 class="card-title">Total Amount : <span>UGX 41000</span></h4>
+                                    <?php
+                                        // Include database connection
+                                        require_once 'db_conn.php';
+
+                                        // SQL query to find the sum of the 'amount' column
+                                        $sql = "SELECT SUM(amount) as total_amount FROM expenses";
+
+                                        try {
+                                            $stmt = $conn->prepare($sql);
+                                            $stmt->execute();
+                                            
+                                            // Fetch the result
+                                            $result = $stmt->fetch();
+
+                                            // Get the total amount
+                                            $total_amount = $result['total_amount'] ?? 0; // If null, set to 0
+
+                                        } catch (PDOException $e) {
+                                            echo "Error: " . $e->getMessage();
+                                        }
+                                        ?>
+                                    <h4 class="card-title">Total Amount : <span  style="color: #6ad892;">UGX <?php echo number_format($total_amount); ?></span></h4>
                                 </div>
                                 <!--end col-->
                                 <div class="col-auto">
@@ -47,7 +102,7 @@
                         <div class="card-body pt-0">
 
                             <div class="table-responsive">
-                                <table class="table mb-0 checkbox-all" id="datatable_1">
+                                <table class="table mb-0 checkbox-all" id="expenses">
                                     <thead class="table-light">
                                         <tr>
 

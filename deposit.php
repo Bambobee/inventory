@@ -1,4 +1,38 @@
-<?php include 'header.php'; ?>
+<?php
+session_start();
+include 'db_conn.php';
+
+// Check if the user is logged in by checking if the 'email' session is set
+if (!isset($_SESSION['email'])) {
+    // If not logged in, redirect to the login page
+    header('Location: index');
+    exit();
+} else {
+    $email = $_SESSION['email'];
+
+    // Fetch user role from the database
+    $stmt = $conn->prepare("SELECT role FROM users WHERE email = :email");
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Check if user was found
+    if ($user) {
+        $role = $user['role'];
+
+        // Redirect if the user is not an Admin
+        if ($role !== 'Admin') {
+            header('Location: auth-maintenance');
+            exit();
+        }
+    } else {
+        // Handle case if no user found (optional)
+        header('Location: index');
+        exit();
+    }
+}
+?>
+<?php include 'header1.php'; ?>
 
 
 <div class="page-wrapper">
@@ -47,7 +81,7 @@
                         <div class="card-body pt-0">
 
                             <div class="table-responsive">
-                            <table class="table mb-0 checkbox-all" id="datatable_1">
+                            <table class="table mb-0 checkbox-all" id="deposit">
                                     <thead class="table-light">
                                         <tr>
                                             <th class="ps-0">S.N</th>
