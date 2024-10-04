@@ -28,6 +28,7 @@ if (!isset($_SESSION['email'])) {
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/chosen.min.css" rel="stylesheet" type="text/css" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/datatables.min.css">
     <link rel="stylesheet" href="./assets/responsive.dataTables.min.css">

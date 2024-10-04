@@ -60,7 +60,7 @@ if (!isset($_SESSION['email'])) {
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header " style="background-color: #fff;">
                             <div class="row align-items-center">
                                 <div class="col">
                                     <h4 class="card-title">Payment Method</h4>
