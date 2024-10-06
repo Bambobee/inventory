@@ -21,6 +21,10 @@
             </div>";
               unset($_SESSION['error']); // Clear the message
           }
+
+          include 'backend/fetch_category.php';
+          include 'backend/fetch_active_suppliers.php';
+          include 'backend/fetch_unit.php';
           ?>
             <div class="row">
                 <div class="col-12">
@@ -77,13 +81,14 @@
                                       <td><?php echo htmlspecialchars($product['status']); ?></td>
                                       <td><?php echo htmlspecialchars($product['date']); ?></td>
                                             <td class="text-end">
-                                                <a href="ecommerce-products.html#"><i
-                                                        class="las la-pen text-secondary fs-18"></i></a>
-                                                <a href="ecommerce-products.html#"><i
-                                                        class="las la-trash-alt text-secondary fs-18"></i></a>
-                                            </td>
+                                            <a href="#"  data-bs-toggle="modal" data-bs-target="#editProduct<?php echo htmlspecialchars($product['id']); ?>"><i class="las la-pen text-primary fs-18"></i></a>
+                                          <a href="backend/delete_product.php?id=<?php echo $product['id']; ?>" onclick="return confirm('Are you sure you want to delete this product?');">
+                                            <i class="las la-trash-alt text-danger fs-18"></i>
+                                          </a>    
+                                        </td>
                                         </tr>
                                         <?php 
+                                         include('backend/edit_product.php');
                                 endforeach; ?>
                               </tbody>
                                 </table>
@@ -117,7 +122,7 @@
                                 <select class="form-select" name="category" id="select_cate" aria-label="Default select example">
                                     <option selected value="">Select category Name</option>
                                     <?php 
-                                  include 'backend/fetch_category.php';
+                                  
                                   foreach ($categories as $index => $category): ?>
                                     <option value="<?php echo htmlspecialchars($category['name']); ?>">
                                         <?php echo htmlspecialchars($category['name']); ?></option>
@@ -139,7 +144,7 @@
                                 <select class="form-select" id="sup_select" name="supplier_id" aria-label="Default select example">
                                     <option selected value="">Select Suplier Name</option>
                                     <?php 
-                                  include 'backend/fetch_active_suppliers.php';
+                                 
                                   foreach ($suppliers as $index => $supplier): ?>
                                     <option value="<?php echo htmlspecialchars($supplier['id']); ?>">
                                         <?php echo htmlspecialchars($supplier['name']); ?></option>
@@ -152,7 +157,7 @@
                                 <select class="form-select" id="unit_sele" name="unit" aria-label="Default select example">
                                     <option selected value="">Select Base Unit</option>
                                     <?php 
-                                  include 'backend/fetch_unit.php';
+                                  
                                   foreach ($units as $index => $unit): ?>
                                     <option value="<?php echo htmlspecialchars($unit['base_unit']); ?>">
                                         <?php echo htmlspecialchars($unit['base_unit']); ?></option>
