@@ -46,7 +46,7 @@
                         <div class="card-body pt-0">
 
                             <div class="table-responsive">
-                                <table class="table mb-0 checkbox-all" id="datatable_1">
+                                <table class="table mb-0 checkbox-all" id="products_table">
                                     <thead class="table-light">
                                         <tr>
 
@@ -63,17 +63,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <?php 
+                                  include 'backend/fetch_product.php';
+                                  foreach ($products as $index => $product): ?>
                                         <tr>
-
-
-                                            <td>1</td>
-                                            <td>Food</td>
-                                            <td>jghgjhngbh</td>
-                                            <td>UGX 1200</td>
-                                            <td>UGX 1300</td>
-                                            <td>rfdrf</td>
-                                            <td>Kilogram</td>
-                                            <td>Active</td>
+                                      <td><?php echo $index + 1; ?></td> 
+                                      <td><?php echo htmlspecialchars($product['name']); ?></td>
+                                      <td><?php echo htmlspecialchars($product['category']); ?></td>
+                                      <td><?php echo htmlspecialchars($product['product_cost']); ?></td>
+                                      <td><?php echo htmlspecialchars($product['selling_price']); ?></td>
+                                      <td><?php echo htmlspecialchars($product['supplier_name']); ?></td>
+                                      <td><?php echo htmlspecialchars($product['unit']); ?></td>
+                                      <td><?php echo htmlspecialchars($product['status']); ?></td>
+                                      <td><?php echo htmlspecialchars($product['date']); ?></td>
                                             <td class="text-end">
                                                 <a href="ecommerce-products.html#"><i
                                                         class="las la-pen text-secondary fs-18"></i></a>
@@ -81,8 +83,9 @@
                                                         class="las la-trash-alt text-secondary fs-18"></i></a>
                                             </td>
                                         </tr>
-
-                                    </tbody>
+                                        <?php 
+                                endforeach; ?>
+                              </tbody>
                                 </table>
                             </div>
                         </div>

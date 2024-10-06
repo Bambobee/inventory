@@ -140,6 +140,13 @@
         responsive: true,
     });
     </script>
+
+<!-- product -->
+<script>
+    new DataTable('#products_table', {
+        responsive: true,
+    });
+    </script>
 </body>
 <!--end body-->
 
