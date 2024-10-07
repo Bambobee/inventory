@@ -247,7 +247,7 @@ if (!isset($_SESSION['email'])) {
                             <a class="nav-link" href="ecommerce-index.html#stock" data-bs-toggle="collapse"
                                 role="button" aria-expanded="false" aria-controls="stock">
                                 <i class="bx bxs-store-alt menu-icon"></i>
-                                <span>Stock </span>
+                                <span>Stock color</span>
                             </a>
                             <div class="collapse" id="stock">
                                 <ul class="nav flex-column">
@@ -256,8 +256,31 @@ if (!isset($_SESSION['email'])) {
                                     </li>
                                     <!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="low_stock">Low Stock <span
-                                                class="badge bg-danger">4</span></a>
+                                    <?php
+
+                                        // Function to count low stock items
+                                        function countLowStock($conn) {
+                                            try {
+                                                // Count the number of low stock items
+                                                $stmt = $conn->prepare("SELECT COUNT(*) as low_stock_count
+                                                                        FROM stock a
+                                                                        WHERE a.stock_level <= a.stock_alert_level");
+                                                $stmt->execute();
+                                                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                                                return $result['low_stock_count'];
+                                            } catch (PDOException $e) {
+                                                echo "Error: " . $e->getMessage();
+                                                return 0; // Return 0 if there's an error
+                                            }
+                                        }
+
+                                        // Fetch the count of low stock items
+                                        $lowStockCount = countLowStock($conn);
+                                        ?>
+
+                                        <!-- HTML Navigation Link with Low Stock Badge -->
+                                        <a class="nav-link" href="low_stock">Low Stock <span class="badge bg-danger"><?php echo htmlspecialchars($lowStockCount); ?></span></a>
+
 
                                     </li>
                                     <!--end nav-item-->
@@ -373,14 +396,60 @@ if (!isset($_SESSION['email'])) {
                                     </li>
                                     <!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="low_stock">Low Stock <span
-                                                class="badge bg-danger">4</span></a>
+                                    <?php
+
+                            // Function to count low stock items
+                            function countLowStock($conn) {
+                                try {
+                                    // Count the number of low stock items
+                                    $stmt = $conn->prepare("SELECT COUNT(*) as low_stock_count
+                                                            FROM stock a
+                                                            WHERE a.stock_level <= a.stock_alert_level");
+                                    $stmt->execute();
+                                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                                    return $result['low_stock_count'];
+                                } catch (PDOException $e) {
+                                    echo "Error: " . $e->getMessage();
+                                    return 0; // Return 0 if there's an error
+                                }
+                            }
+
+                            // Fetch the count of low stock items
+                            $lowStockCount = countLowStock($conn);
+                            ?>
+
+                            <!-- HTML Navigation Link with Low Stock Badge -->
+                            <a class="nav-link" href="low_stock">Low Stock <span class="badge bg-danger"><?php echo htmlspecialchars($lowStockCount); ?></span></a>
+
 
                                     </li>
                                     <!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="expired_stock">Expired Stock <span
-                                                class="badge bg-danger">4</span></a>
+                                    <?php
+
+                                        // Function to count expired stock items
+                                        function countExpiredStock($conn) {
+                                            try {
+                                                // Count the number of expired stock items where expiry_date is less than or equal to the current date
+                                                $stmt = $conn->prepare("SELECT COUNT(*) as expired_stock_count
+                                                                        FROM stock a
+                                                                        WHERE a.expiry_date <= CURDATE()");
+                                                $stmt->execute();
+                                                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                                                return $result['expired_stock_count'];
+                                            } catch (PDOException $e) {
+                                                echo "Error: " . $e->getMessage();
+                                                return 0; // Return 0 if there's an error
+                                            }
+                                        }
+
+                                        // Fetch the count of expired stock items
+                                        $expiredStockCount = countExpiredStock($conn);
+                                        ?>
+
+                                        <!-- HTML Navigation Link with Expired Stock Badge -->
+                                        <a class="nav-link" href="expired_stock">Expired Stock <span class="badge bg-danger"><?php echo htmlspecialchars($expiredStockCount); ?></span></a>
+                                        </a>
                                     </li>
                                 </ul>
                                 <!--end nav-->

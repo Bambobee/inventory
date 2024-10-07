@@ -15,7 +15,7 @@
                                     </div><!--end col-->
                                     <div class="col-auto">                                         
                                         <div class="col-auto">
-                                            <a href="add_sales.html" class="btn btn-primary">Add Sales</a>
+                                            <a href="add_sales" class="btn btn-primary">Add Sales</a>
                                           </div>
                                     </div><!--end col-->
                                 </div><!--end row-->                                  

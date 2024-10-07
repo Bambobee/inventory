@@ -1,0 +1,50 @@
+<?php
+session_start(); // Start the session to store messages
+require '../db_conn.php'; // Include the database connection
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve and sanitize form inputs
+    $stock_id = !empty($_POST['stock_id']) ? trim($_POST['stock_id']) : null;
+    $product_id = !empty($_POST['product_id']) ? intval($_POST['product_id']) : null;
+    $stock_level = !empty($_POST['stock_level']) ? intval($_POST['stock_level']) : null;
+    $stock_alert_level = !empty($_POST['stock_alert_level_figure']) ? intval($_POST['stock_alert_level_figure']) : null;
+    $expiry_date = !empty($_POST['expiry_date']) ? $_POST['expiry_date'] : null;
+    $created_at = !empty($_POST['created_at']) ? $_POST['created_at'] : null;
+
+    // Check if the required fields are filled
+    if ($stock_id && $product_id && $stock_level && $stock_alert_level && $expiry_date && $created_at) {
+        try {
+            // Prepare SQL statement
+            $sql = "INSERT INTO stock (stock_id, product_id, stock_level, stock_alert_level, expiry_date, created_at) 
+                    VALUES (:stock_id, :product_id, :stock_level, :stock_alert_level, :expiry_date, :created_at)";
+
+            $stmt = $conn->prepare($sql);
+            // Bind parameters
+            $stmt->bindParam(':stock_id', $stock_id);
+            $stmt->bindParam(':product_id', $product_id);
+            $stmt->bindParam(':stock_level', $stock_level);
+            $stmt->bindParam(':stock_alert_level', $stock_alert_level);
+            $stmt->bindParam(':expiry_date', $expiry_date);
+            $stmt->bindParam(':created_at', $created_at);
+
+            // Execute the statement
+            $stmt->execute();
+
+            // Success message
+            $_SESSION['success'] = "Stock successfully added!";
+        } catch (PDOException $ex) {
+            // Error message
+            $_SESSION['error'] = "Error adding stock: " . $ex->getMessage();
+        }
+    } else {
+        // Error message for missing required fields
+        $_SESSION['error'] = "Please fill in all required fields.";
+    }
+} else {
+    $_SESSION['error'] = "Invalid request method.";
+}
+
+// Redirect back to the form page
+header("Location: ../stock_levels");
+exit();
+?>

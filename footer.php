@@ -147,6 +147,12 @@
         responsive: true,
     });
     </script>
+    <!-- stock_table -->
+    <script>
+    new DataTable('#stock_table', {
+        responsive: true,
+    });
+    </script>
 </body>
 <!--end body-->
 

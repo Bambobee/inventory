@@ -8,7 +8,7 @@ if (isset($_GET['id'])) {
     $account_id = $_GET['id'];
 
     // Delete query
-    $sql = "DELETE FROM product WHERE id = :id";
+    $sql = "DELETE FROM stock WHERE id = :id";
 
     try {
         $stmt = $conn->prepare($sql);
@@ -19,19 +19,19 @@ if (isset($_GET['id'])) {
         // Execute the query
         if ($stmt->execute()) {
             session_start();
-            $_SESSION['success'] = "product deleted successfully!";
-            header("Location: ../products");
+            $_SESSION['success'] = "stock deleted successfully!";
+            header("Location: ../stock_levels");
         } else {
             session_start();
-            $_SESSION['error'] = "Error occurred while deleting the product.";
-            header("Location: ../products");
+            $_SESSION['error'] = "Error occurred while deleting the stock.";
+            header("Location: ../stock_levels");
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
 } else {
     session_start();
-    $_SESSION['error'] = "Invalid product ID.";
-    header("Location: ../products");
+    $_SESSION['error'] = "Invalid stock ID.";
+    header("Location: ../stock_levels");
 }
 ?>
