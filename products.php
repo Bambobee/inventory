@@ -78,8 +78,9 @@
                                       <td><?php echo htmlspecialchars($product['selling_price']); ?></td>
                                       <td><?php echo htmlspecialchars($product['supplier_name']); ?></td>
                                       <td><?php echo htmlspecialchars($product['unit']); ?></td>
-                                      <td><?php echo htmlspecialchars($product['status']); ?></td>
+                                      
                                       <td><?php echo htmlspecialchars($product['date']); ?></td>
+                                      <td><?php echo htmlspecialchars($product['status']); ?></td>
                                             <td class="text-end">
                                             <a href="#"  data-bs-toggle="modal" data-bs-target="#editProduct<?php echo htmlspecialchars($product['id']); ?>"><i class="las la-pen text-primary fs-18"></i></a>
                                           <a href="backend/delete_product.php?id=<?php echo $product['id']; ?>" onclick="return confirm('Are you sure you want to delete this product?');">
