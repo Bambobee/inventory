@@ -52,7 +52,7 @@
                                             <th>Address</th>
                                             <th>Added Date</th>
                                             <th>Total  Purchase Due</th>
-                                            <th>Total  Purchase Due Returned</th>
+                                            <!-- <th>Total  Purchase Due Returned</th> -->
                                             <th>Status</th>
                                             <th>Action</th>
                                           </tr>
@@ -75,8 +75,7 @@
                                                 <td><?php echo htmlspecialchars($supplier['contact']); ?></td>
                                                 <td><?php echo htmlspecialchars($supplier['address']); ?></td>
                                                 <td><?php echo htmlspecialchars($supplier['date']); ?></td>
-                                                <td>ugx <?php echo htmlspecialchars($supplier['total_purchased_due']); ?></td>
-                                                <td>ugx <?php echo htmlspecialchars($supplier['total_purchased_due_returned']); ?></td>
+                                                <td>ugx <?php echo htmlspecialchars($supplier['total_due']); ?></td>
                                                 <td> <span
                                                     class="badge rounded text-<?php echo $supplier['status'] === 'Active' ? 'success' : 'secondary'; ?> bg-<?php echo $supplier['status'] === 'Active' ? 'success-subtle' : 'secondary-subtle'; ?>">
                                                     <?php echo htmlspecialchars($supplier['status']); ?>

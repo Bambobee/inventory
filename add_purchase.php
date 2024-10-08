@@ -5,7 +5,7 @@ include 'backend/fetch_active_suppliers.php';
 <div class="page-wrapper">
     <!-- Page Content-->
     <div class="page-content">
-        <form action="" method="post">
+        <form action="backend/submit_purchase.php" method="post">
             <div class="container-xxl">
                 <div class="row">
                     <div class="col-12">
@@ -121,6 +121,7 @@ include 'backend/fetch_active_suppliers.php';
                                                 <td class="text-end">
                                                     <a href="#" class="remove-row"><i
                                                             class="las la-trash-alt text-secondary fs-18"></i>
+
                                                         </a>
                                                 </td>
                                             </tr>
@@ -149,12 +150,12 @@ include 'backend/fetch_active_suppliers.php';
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><span class="font-weight-bold">Grand Total</span></td>
                                                 <tr>
                                                     <td><span class="font-weight-bold">Grand Total</span></td>
                                                     <td>
                                                         <span id="grand_total_display" class="font-weight-bold">Ugx 0.00</span>
                                                         <input type="hidden" name="grand_total" value="">
+                                                        <input type="hidden" name="due" value="">
                                                     </td>
                                                 </tr>
                                             </tr>
@@ -347,6 +348,7 @@ function calculateGrandTotal() {
     // Update the grand total display and hidden input
     $('#grand_total_display').text('Ugx ' + grandTotal.toFixed(2));
     $('input[name="grand_total"]').val(grandTotal.toFixed(2)); // Update the hidden input with the grand total
+    $('input[name="due"]').val(grandTotal.toFixed(2)); // Update the hidden input with the grand total
 
     // Update the order summary
     $('#order_tax_display').text('Ugx ' + orderTax.toFixed(2) + ' (' + taxPercentage + '%)');

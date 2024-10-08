@@ -78,7 +78,6 @@
                                       <td><?php echo htmlspecialchars($product['selling_price']); ?></td>
                                       <td><?php echo htmlspecialchars($product['supplier_name']); ?></td>
                                       <td><?php echo htmlspecialchars($product['unit']); ?></td>
-                                      
                                       <td><?php echo htmlspecialchars($product['date']); ?></td>
                                       <td><?php echo htmlspecialchars($product['status']); ?></td>
                                             <td class="text-end">
@@ -197,8 +196,6 @@
         </script>
 
         
-
-<script src="./jquery/jquery-3.6.1.min.js"></script>
         <script src="./jquery/jquery.validate.min.js"></script>
         <script>
         $(document).ready(() => {

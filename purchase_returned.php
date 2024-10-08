@@ -16,7 +16,7 @@
                                     </div><!--end col-->
                                     <div class="col-auto">                                         
                                         <div class="col-auto">
-                                            <a href="add_purchase_returned.html" class="btn btn-primary">Add Purchase Returned</a>
+                                            <a href="add_purchase_returned" class="btn btn-primary">Add Purchase Returned</a>
                                           </div>
                                     </div><!--end col-->
                                 </div><!--end row-->                                  

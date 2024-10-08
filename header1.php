@@ -242,7 +242,7 @@
                             <a class="nav-link" href="ecommerce-index.html#stock" data-bs-toggle="collapse"
                                 role="button" aria-expanded="false" aria-controls="stock">
                                 <i class="bx bxs-store-alt menu-icon"></i>
-                                <span>Stock color</span>
+                                <span>Stock </span>
                             </a>
                             <div class="collapse" id="stock">
                                 <ul class="nav flex-column">

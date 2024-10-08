@@ -153,6 +153,12 @@
         responsive: true,
     });
     </script>
+    <!-- purchase_table -->
+    <script>
+    new DataTable('#purchase_table', {
+        responsive: true,
+    });
+    </script>
 </body>
 <!--end body-->
 
