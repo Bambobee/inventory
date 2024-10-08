@@ -59,7 +59,6 @@
                                             <th>Category</th>
                                             <th>Product Cost</th>
                                             <th> Selling Price</th>
-                                            <th>Suplier</th>
                                             <th>Base Unit</th>
                                             <th>Created At</th>
                                             <th>Status</th>
@@ -76,7 +75,6 @@
                                       <td><?php echo htmlspecialchars($product['category']); ?></td>
                                       <td><?php echo htmlspecialchars($product['product_cost']); ?></td>
                                       <td><?php echo htmlspecialchars($product['selling_price']); ?></td>
-                                      <td><?php echo htmlspecialchars($product['supplier_name']); ?></td>
                                       <td><?php echo htmlspecialchars($product['unit']); ?></td>
                                       <td><?php echo htmlspecialchars($product['date']); ?></td>
                                       <td><?php echo htmlspecialchars($product['status']); ?></td>
@@ -115,33 +113,20 @@
                         <form id="form-validation-2" action="backend/submit_product.php" method="post"  class="form">
                             <div class="mb-2">
                                 <label class="form-label"> Name</label>
-                                <input class="form-control" name="name" type="text" placeholder="Enter Product Name">
+                                <input class="form-control" name="name" type="text" required placeholder="Enter Product Name">
                             </div>
-                            <div class="mb-2">
-                                <label class="form-label">Category</label>
-                                <select class="form-select" name="category" id="select_cate" aria-label="Default select example">
-                                    <option selected value="">Select category Name</option>
-                                    <?php 
-                                  
-                                  foreach ($categories as $index => $category): ?>
-                                    <option value="<?php echo htmlspecialchars($category['name']); ?>">
-                                        <?php echo htmlspecialchars($category['name']); ?></option>
-                                    <?php 
-                                endforeach; ?>
-                                </select>
-                                </select>
-                            </div>
+                            
                             <div class="mb-2">
                                 <label class="form-label">product Cost</label>
-                                <input class="form-control" name="product_cost" type="number" placeholder="Enter Product Cost">
+                                <input class="form-control" name="product_cost" type="number" required placeholder="Enter Product Cost">
                             </div>
                             <div class="mb-2">
                                 <label class="form-label">selling Price</label>
-                                <input class="form-control" name="selling_price" type="number" placeholder="Enter Product price">
+                                <input class="form-control" name="selling_price" type="number" required placeholder="Enter Product price">
                             </div>
                             <div class="mb-2">
                                 <label class="form-label">Suplier</label>
-                                <select class="form-select" id="sup_select" name="supplier_id" aria-label="Default select example">
+                                <select class="form-select" id="sup_select" name="supplier_id" required aria-label="Default select example">
                                     <option selected value="">Select Suplier Name</option>
                                     <?php 
                                  
@@ -154,7 +139,7 @@
                             </div>
                             <div class="mb-2">
                                 <label class="form-label">Base Unit</label>
-                                <select class="form-select" id="unit_sele" name="unit" aria-label="Default select example">
+                                <select class="form-select" id="unit_sele" name="unit" required aria-label="Default select example">
                                     <option selected value="">Select Base Unit</option>
                                     <?php 
                                   
@@ -167,7 +152,7 @@
                             </div>
                             <div class="mb-2">
                                 <label class="form-label">Status</label>
-                                <select class="form-select" name="status" aria-label="Default select example">
+                                <select class="form-select" name="status" required aria-label="Default select example">
                                     <option selected value="">Select status</option>
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>

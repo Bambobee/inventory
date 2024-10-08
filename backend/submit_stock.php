@@ -14,24 +14,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if the required fields are filled
     if ($stock_id && $product_id && $stock_level && $stock_alert_level && $expiry_date && $created_at) {
         try {
-            // Prepare SQL statement
-            $sql = "INSERT INTO stock (stock_id, product_id, stock_level, stock_alert_level, expiry_date, created_at) 
-                    VALUES (:stock_id, :product_id, :stock_level, :stock_alert_level, :expiry_date, :created_at)";
+            // Check if the combination of product_id and stock_id already exists
+            $check_sql = "SELECT COUNT(*) FROM stock WHERE product_id = :product_id AND stock_id = :stock_id";
+            $check_stmt = $conn->prepare($check_sql);
+            $check_stmt->bindParam(':product_id', $product_id);
+            $check_stmt->bindParam(':stock_id', $stock_id);
+            $check_stmt->execute();
 
-            $stmt = $conn->prepare($sql);
-            // Bind parameters
-            $stmt->bindParam(':stock_id', $stock_id);
-            $stmt->bindParam(':product_id', $product_id);
-            $stmt->bindParam(':stock_level', $stock_level);
-            $stmt->bindParam(':stock_alert_level', $stock_alert_level);
-            $stmt->bindParam(':expiry_date', $expiry_date);
-            $stmt->bindParam(':created_at', $created_at);
+            $count = $check_stmt->fetchColumn();
 
-            // Execute the statement
-            $stmt->execute();
+            if ($count > 0) {
+                // Error message if the record already exists
+                $_SESSION['error'] = "This stock entry with the same product ID and stock ID already exists.";
+            } else {
+                // Prepare SQL statement for inserting data
+                $sql = "INSERT INTO stock (stock_id, product_id, stock_level, stock_alert_level, expiry_date, created_at) 
+                        VALUES (:stock_id, :product_id, :stock_level, :stock_alert_level, :expiry_date, :created_at)";
 
-            // Success message
-            $_SESSION['success'] = "Stock successfully added!";
+                $stmt = $conn->prepare($sql);
+
+                // Bind parameters
+                $stmt->bindParam(':stock_id', $stock_id);
+                $stmt->bindParam(':product_id', $product_id);
+                $stmt->bindParam(':stock_level', $stock_level);
+                $stmt->bindParam(':stock_alert_level', $stock_alert_level);
+                $stmt->bindParam(':expiry_date', $expiry_date);
+                $stmt->bindParam(':created_at', $created_at);
+
+                // Execute the statement
+                $stmt->execute();
+
+                // Success message
+                $_SESSION['success'] = "Stock successfully added!";
+            }
         } catch (PDOException $ex) {
             // Error message
             $_SESSION['error'] = "Error adding stock: " . $ex->getMessage();

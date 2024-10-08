@@ -2,14 +2,37 @@
 // Include database connection
 require_once '../db_conn.php';
 
+// Start session
+session_start();
+
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Retrieve form data
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $contact = $_POST['contact'];
-    $added_date = $_POST['added_date'];
-    $status = $_POST['status'];
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $contact = trim($_POST['contact']);
+    $added_date = trim($_POST['added_date']);
+    $status = trim($_POST['status']);
+
+    // Check for empty fields
+    if (empty($name) || empty($email) || empty($contact) || empty($added_date) || empty($status)) {
+        $_SESSION['error'] = "All fields are required.";
+        header("Location: ../customers");
+        exit();
+    }
+
+    // Check if the email is unique
+    $checkEmailSql = "SELECT * FROM customer WHERE email = :email";
+    $stmt = $conn->prepare($checkEmailSql);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    $existingEmail = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($existingEmail) {
+        $_SESSION['error'] = "Email already exists. Please use a different email.";
+        header("Location: ../customers");
+        exit();
+    }
 
     // Generate a random six-digit customer ID in the format CUST_number
     $random_number = mt_rand(100000, 999999);
@@ -32,16 +55,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Execute the query
         if ($stmt->execute()) {
-            session_start();
             $_SESSION['success'] = "Customer created successfully with ID: $cust_id";
             header("Location: ../customers");
         } else {
-            session_start();
             $_SESSION['error'] = "Error occurred while creating the customer.";
             header("Location: ../customers");
         }
     } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        $_SESSION['error'] = "Database error: " . $e->getMessage();
+        header("Location: ../customers");
     }
 }
 ?>

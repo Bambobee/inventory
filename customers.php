@@ -132,23 +132,23 @@
                         <form action="backend/submit_customer.php" method="post" id="form-validation-2" class="form">
                             <div class="mb-2">
                                 <label class="form-label">Name</label>
-                                <input class="form-control" name="name" type="text" placeholder="Enter User Name">
+                                <input class="form-control" name="name" type="text" required placeholder="Enter User Name">
                             </div>
                             <div class="mb-2">
                                 <label class="form-label">User Email</label>
-                                <input class="form-control" name="email" type="email" placeholder="Enter User Email">
+                                <input class="form-control" name="email" type="email" required placeholder="Enter User Email">
                             </div>
                             <div class="mb-2">
                                 <label class="form-label">Contact</label>
-                                <input class="form-control" name="contact" type="text" placeholder="Enter User Contact">
+                                <input class="form-control" name="contact" type="text" required placeholder="Enter User Contact">
                             </div>
                             <div class="mb-2">
                                 <label class="form-label">Date</label>
-                                <input class="form-control" name="added_date" type="date" placeholder="Select Date">
+                                <input class="form-control" name="added_date" type="date" required placeholder="Select Date">
                             </div>
                             <div class="mb-2">
                                 <label class="form-label">Status</label>
-                                <select class="form-select" name="status" aria-label="Default select example">
+                                <select class="form-select" name="status" required aria-label="Default select example">
                                     <option selected value=" ">Open from this select menu</option>
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
@@ -167,70 +167,80 @@
         <script src="./jquery/jquery-3.6.1.min.js"></script>
         <script src="./jquery/jquery.validate.min.js"></script>
         <script>
-        $(document).ready(() => {
-            $.validator.addMethod(
-                "regex",
-                function(value, element, regexp) {
-                    var check = false;
-                    return this.optional(element) || regexp.test(value);
+$(document).ready(() => {
+    // Custom method to validate regex
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var check = false;
+            return this.optional(element) || regexp.test(value);
+        }
+    );
+
+    // Custom method to validate file extension
+    $.validator.addMethod("extension", function(value, element, param) {
+        param = typeof param === "string" ? param.replace(/,/g, '|') : "png|jpe?g|gif";
+        return this.optional(element) || value.match(new RegExp(".(" + param + ")$", "i"));
+    });
+
+    // Custom method to validate file size
+    $.validator.addMethod('filesize', function(value, element, param) {
+        return this.optional(element) || (element.files[0].size <= param)
+    }, 'File size must be less than {0} bytes');
+
+    // Re-initialize form validation each time the modal is shown
+    $('#addBoard').on('shown.bs.modal', function () {
+        // Clear previous validation errors
+        $("#form-validation-2").validate().resetForm();
+
+        // Initialize validation for the form
+        $("#form-validation-2").validate({
+            rules: {
+                'name': {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 50,
+                },
+                'email': {
+                    required: true,
+                    email: true,
+                },
+                'contact': {
+                    required: true,
+                    regex: /^[0-9]{10,15}$/, // Phone number validation
+                },
+                'added_date': {
+                    required: true,
+                },
+                'status': {
+                    required: true,
                 }
-            );
-
-            $.validator.addMethod("extension", function(value, element, param) {
-                param = typeof param === "string" ? param.replace(/,/g, '|') : "png|jpe?g|gif";
-                return this.optional(element) || value.match(new RegExp(".(" + param + ")$", "i"));
-            });
-
-            $.validator.addMethod('filesize', function(value, element, param) {
-                return this.optional(element) || (element.files[0].size <= param)
-            }, 'File size must be less than {0} bytes');
-
-            $("#form-validation-2").validate({
-                rules: {
-                    'name': {
-                        required: true,
-                        minlength: 3,
-                        maxlength: 50,
-                    },
-                    'email': {
-                        required: true,
-                        email: true,
-                    },
-                    'contact': {
-                        required: true,
-                        regex: /^[0-9]{10,15}$/, // Phone number validation
-                    },
-                    'added_date': {
-                        required: true,
-                    },
-                    'status': {
-                        required: true,
-                    }
+            },
+            messages: {
+                'name': {
+                    required: "Please enter Account Name.",
+                    minlength: "A minimum of 3 characters is required.",
+                    maxlength: "Field accepts a maximum of 50 characters.",
                 },
-                messages: {
-                    'name': {
-                        required: "Please enter Account Name.",
-                        minlength: "A minimum of 3 characters is required.",
-                        maxlength: "Field accepts a maximum of 50 characters.",
-                    },
-                    'email': {
-                        required: "Please enter the email.",
-                        email: "Enter a valid email address.",
-                    },
-                    'contact': {
-                        required: "Please enter the phone number.",
-                        regex: "Enter a valid phone number (10-15 digits).",
-                    },
-                    'added_date': {
-                        required: "Please select the date.",
-                    },
-                    'status': {
-                        required: "Please select the status.",
-                    }
+                'email': {
+                    required: "Please enter the email.",
+                    email: "Enter a valid email address.",
                 },
-            });
-        })
-        </script>
+                'contact': {
+                    required: "Please enter the phone number.",
+                    regex: "Enter a valid phone number (10-15 digits).",
+                },
+                'added_date': {
+                    required: "Please select the date.",
+                },
+                'status': {
+                    required: "Please select the status.",
+                }
+            },
+        });
+    });
+});
+</script>
 
 
         <?php
