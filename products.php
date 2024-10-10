@@ -23,7 +23,6 @@
           }
 
           include 'backend/fetch_category.php';
-          include 'backend/fetch_active_suppliers.php';
           include 'backend/fetch_unit.php';
           ?>
             <div class="row">
@@ -124,19 +123,7 @@
                                 <label class="form-label">selling Price</label>
                                 <input class="form-control" name="selling_price" type="number" required placeholder="Enter Product price">
                             </div>
-                            <div class="mb-2">
-                                <label class="form-label">Suplier</label>
-                                <select class="form-select" id="sup_select" name="supplier_id" required aria-label="Default select example">
-                                    <option selected value="">Select Suplier Name</option>
-                                    <?php 
-                                 
-                                  foreach ($suppliers as $index => $supplier): ?>
-                                    <option value="<?php echo htmlspecialchars($supplier['id']); ?>">
-                                        <?php echo htmlspecialchars($supplier['name']); ?></option>
-                                    <?php 
-                                endforeach; ?>
-                                </select>
-                            </div>
+                            
                             <div class="mb-2">
                                 <label class="form-label">Base Unit</label>
                                 <select class="form-select" id="unit_sele" name="unit" required aria-label="Default select example">

@@ -37,18 +37,7 @@
                                 <label class="form-label">selling Price</label>
                                 <input class="form-control" value="<?php echo htmlspecialchars($product['selling_price']); ?>" name="selling_price" type="number" placeholder="Enter Product price">
                             </div>
-                            <div class="mb-2">
-                                <label class="form-label">Suplier</label>
-                                <select class="form-select" id="sup_select" name="supplier_id" aria-label="Default select example">
-                                    <option selected value="">Select Suplier Name</option>
-                                    <?php 
-                                  foreach ($suppliers as $index => $supplier): ?>
-                                    <option value="<?php echo htmlspecialchars($supplier['id']); ?>" <?php echo ( $supplier['id']  == $product['supplier_id']) ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($supplier['name']); ?></option>
-                                    <?php 
-                                endforeach; ?>
-                                </select>
-                            </div>
+                          
                             <div class="mb-2">
                                 <label class="form-label">Base Unit</label>
                                 <select class="form-select" id="unit_sele" name="unit" aria-label="Default select example">
