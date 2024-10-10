@@ -98,7 +98,10 @@ include 'backend/fetch_payment.php';
                                                         <i class='bx bx-dots-vertical-rounded'></i>
                                                     </button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <li><a class="dropdown-item" href="#">Edit Purchase</a></li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit_purchase?id=<?php echo urlencode($purchase['id']); ?>">Edit Purchase</a>
+                                                    </li>
+
                                                         <li><a class="dropdown-item" href="#">Purchase Details</a></li>
 
                                                         <!-- Display "Show Payments" and "Download PDF" options if payment status is not 'Unpaid' -->

@@ -1,11 +1,19 @@
-<?php include 'header.php'; 
-include 'backend/fetch_active_suppliers.php';
-?>
+<?php 
+include 'header.php'; 
 
+if (isset($_GET['id'])) {
+    $purchaseId = $_GET['id'];
+}
+
+include 'backend/fetch_active_suppliers.php'; 
+include 'backend/fetch_active_product.php';
+include 'backend/fetch_purchase_by_id.php'; // This file contains the code to fetch purchase data
+
+?>
 <div class="page-wrapper">
     <!-- Page Content-->
     <div class="page-content">
-        <form action="backend/submit_purchase.php" method="post">
+        <form action="" method="post">
             <div class="container-xxl">
                 <div class="row">
                     <div class="col-12">
@@ -13,56 +21,49 @@ include 'backend/fetch_active_suppliers.php';
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h4 class="card-title">Add New Purchase</h4>
+                                        <h4 class="card-title">Edit Purchase</h4>
                                     </div>
-                                    <!--end col-->
-                                    <!--end col-->
                                 </div>
-                                <!--end row-->
                             </div>
-                            <!--end card-header-->
                             <div class="card-body pt-0">
-
+                                <input type="hidden" value="<?=$purchaseId; ?>" name="purchase_id">
                                 <div class="row">
                                     <div class="col-6">
                                         <label class="form-label">Date</label>
-                                        <input class="form-control" name="date" type="date">
-
+                                        <!-- Populate the date field with the fetched date -->
+                                        <input class="form-control" name="date" type="date"
+                                            value="<?= htmlspecialchars($date); ?>">
                                     </div>
                                     <div class="col-6">
                                         <label class="form-label">Supplier</label>
-                                        <select class="form-select" id="select_sup"name="supplier_id" aria-label="Default select example">
-                                            <option selected>Choose supplier Name</option>
+                                        <select class="form-select" id="select_sup" name="supplier_id"
+                                            aria-label="Default select example">
+                                            <option selected>Choose Supplier Name</option>
                                             <?php 
-                                 
-                                  foreach ($suppliers as $index => $supplier): ?>
-                                            <option value="<?php echo htmlspecialchars($supplier['id']); ?>">
-                                                <?php echo htmlspecialchars($supplier['name']); ?></option>
-                                            <?php 
-                                endforeach; ?>
+                                            // Populate the supplier dropdown with suppliers from the fetch_active_suppliers.php
+                                            foreach ($suppliers as $index => $supplier): ?>
+                                            <option value="<?= htmlspecialchars($supplier['id']); ?>"
+                                                <?= ($supplier_id == $supplier['id']) ? 'selected' : ''; ?>>
+                                                <?= htmlspecialchars($supplier['name']); ?>
+                                            </option>
+                                            <?php endforeach; ?>
                                         </select>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- end col -->
                 </div>
+
+                <!-- Product Rows -->
+                <!-- Product Rows -->
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <div class="row align-items-center">
-
-                                    <!--end col-->
-                                    <!--end col-->
-                                </div>
-                                <!--end row-->
-                            </div>
-                            <!--end card-header-->
-                            <div class="card-body pt-0">
                                 <button type="button" class="btn btn-primary mb-3" id="add_row">Add Row</button>
+                            </div>
+                            <div class="card-body pt-0">
                                 <div>
                                     <table class="table mb-0 checkbox-all">
                                         <thead class="table-light">
@@ -76,23 +77,27 @@ include 'backend/fetch_active_suppliers.php';
                                             </tr>
                                         </thead>
                                         <tbody id="purchase_body">
+                                            <!-- Loop through the fetched product data and populate rows -->
+                                            <?php 
+                            if (isset($product_ids) && isset($quantities) && isset($sub_totals)) {
+                                foreach ($product_ids as $index => $product_id): ?>
                                             <tr>
-                                                <td>1</td>
+                                                <td><?= $index + 1; ?></td>
                                                 <td>
-                                                    <select class="form-select drop" name="product_id[]" id="select_product"
-                                                        aria-label="Default select example">
+                                                    <select class="form-select drop" name="product_id[]"
+                                                        id="select_product" aria-label="Default select example">
                                                         <option selected>Choose Product Name</option>
-                                                        <?php 
-                                                    include 'backend/fetch_active_product.php';
-                                                    foreach ($products as $index => $product): ?>
-                                                        <option value="<?php echo htmlspecialchars($product['id']); ?>">
-                                                            <?php echo htmlspecialchars($product['name']); ?>
+                                                        <?php foreach ($products as $product): ?>
+                                                        <option value="<?= htmlspecialchars($product['id']); ?>"
+                                                            <?= ($product['id'] == $product_id) ? 'selected' : ''; ?>>
+                                                            <?= htmlspecialchars($product['name']); ?>
                                                         </option>
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" readonly class="form-control unit-cost" />
+                                                    <input type="text" readonly class="form-control unit-cost"
+                                                        value="<?= htmlspecialchars($product['selling_price']); ?>" />
                                                 </td>
                                                 <td style="display: flex;">
                                                     <span style="
@@ -105,7 +110,9 @@ include 'backend/fetch_active_suppliers.php';
                                                             cursor: pointer;
                                                         ">
                                                         <i class="bx bx-plus" style="font-size: 20px;"></i></span>
-                                                    <input type="number" name="qty[]" value="1" class="mx-2 form-control quantity" min="1" />
+                                                    <input type="number" name="qty[]"
+                                                        value="<?= htmlspecialchars($quantities[$index]); ?>" value="1"
+                                                        class="mx-2 form-control quantity" min="1" />
                                                     <span style="
                                                         display: flex;
                                                         align-items: center;
@@ -117,110 +124,142 @@ include 'backend/fetch_active_suppliers.php';
                                                     ">
                                                         <i class="bx bx-minus" style="font-size: 20px;"></i></span>
                                                 </td>
+
                                                 <td>
-                                                    <input type="text" name="sub_total[]" readonly class="form-control sub-total" />
+                                                    <input type="text" name="sub_total[]"
+                                                        value="<?= htmlspecialchars($sub_totals[$index]); ?>" readonly
+                                                        class="form-control sub-total" />
                                                 </td>
                                                 <td class="text-end">
                                                     <a href="#" class="remove-row"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i>
-
-                                                        </a>
+                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
                                                 </td>
                                             </tr>
+                                            <?php 
+                                endforeach;
+                            } else { 
+                                // If no products found, you can show a default row
+                            ?>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>
+                                                    <select class="form-select drop" name="product_id[]"
+                                                        id="select_product" aria-label="Default select example">
+                                                        <option selected>Choose Product Name</option>
+                                                        <?php 
+                                        foreach ($products as $product): ?>
+                                                        <option value="<?= htmlspecialchars($product['id']); ?>">
+                                                            <?= htmlspecialchars($product['name']); ?>
+                                                        </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" readonly class="form-control unit-cost" />
+                                                </td>
+                                                <td>
+                                                    <input type="number" name="qty[]" value="1"
+                                                        class="form-control quantity" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="sub_total[]" readonly
+                                                        class="form-control sub-total" />
+                                                </td>
+                                                <td class="text-end">
+                                                    <a href="#" class="remove-row"><i
+                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <!-- Grand Total and other fields -->
                                 <div class="offset-md-9 col-md-3 mt-4">
                                     <table class="table table-striped table-sm">
                                         <tbody>
                                             <tr>
                                                 <td class="bold">Order Tax</td>
                                                 <td>
-                                                    <span id="order_tax_display">Ugx 0.00 (0%)</span>
+                                                    <span id="order_tax_display">Ugx
+                                                        <?= htmlspecialchars($tax); ?>%</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="bold">Discount</td>
                                                 <td>
-                                                    <span id="discount_display">Ugx 0.00</span>
+                                                    <span id="discount_display">Ugx
+                                                        <?= htmlspecialchars($discount); ?></span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="bold">Shipping</td>
                                                 <td>
-                                                    <span id="shipping_display">Ugx 0.00</span>
+                                                    <span id="shipping_display">Ugx
+                                                        <?= htmlspecialchars($shipping); ?></span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <tr>
-                                                    <td><span class="font-weight-bold">Grand Total</span></td>
-                                                    <td>
-                                                        <span id="grand_total_display" class="font-weight-bold">Ugx 0.00</span>
-                                                        <input type="hidden" name="grand_total" value="">
-                                                        <input type="hidden" name="due" value="">
-                                                    </td>
-                                                </tr>
+                                                <td><span class="font-weight-bold">Grand Total</span></td>
+                                                <td>
+                                                    <span id="grand_total_display" class="font-weight-bold">Ugx
+                                                        <?= htmlspecialchars($grand_total); ?></span>
+                                                    <input type="hidden" name="grand_total"
+                                                        value="<?= htmlspecialchars($grand_total); ?>">
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
-                    <!-- end col -->
                 </div>
+
                 <div class="card" style="padding: 2%;">
                     <div class="row">
-
                         <div class="form-group col-md-4">
                             <label for="ordertax">Order Tax (%)</label>
                             <div class="input-group">
-                                <input type="number" name="tax" id="order_tax_input" class="form-control" value="0"
-                                    oninput="calculateGrandTotal()">
+                                <input type="number" name="tax" id="order_tax_input" class="form-control"
+                                    value="<?= htmlspecialchars($tax); ?>" oninput="calculateGrandTotal()">
                                 <span class="input-group-text">%</span>
                             </div>
                         </div>
-
                         <div class="form-group col-md-4">
                             <label for="discount">Discount</label>
                             <div class="input-group">
-                                <input type="number" name="discount" id="discount_input" class="form-control" value="0"
-                                    oninput="calculateGrandTotal()">
+                                <input type="number" name="discount" id="discount_input" class="form-control"
+                                    value="<?= htmlspecialchars($discount); ?>" oninput="calculateGrandTotal()">
                                 <select id="discount_type_input" class="form-select" onchange="calculateGrandTotal()">
                                     <option value="fixed">Fixed</option>
                                     <option value="percent">Percent %</option>
                                 </select>
                             </div>
                         </div>
-
                         <div class="form-group col-md-4">
                             <label for="shipping">Shipping</label>
                             <div class="input-group">
-                                <input type="number" name="shipping" id="shipping_input" class="form-control" value="0"
-                                    oninput="calculateGrandTotal()">
+                                <input type="number" name="shipping" id="shipping_input" class="form-control"
+                                    value="<?= htmlspecialchars($shipping); ?>" oninput="calculateGrandTotal()">
                                 <span class="input-group-text">Ugx</span>
                             </div>
                         </div>
-
                         <div class="form-group col-md-12 mt-2">
                             <label for="note">Please provide any details</label>
-                            <textarea name="details" class="form-control" name="note" id="note"
-                                placeholder="Please provide any details"></textarea>
+                            <textarea name="details" class="form-control" rows="3" id="note"
+                                placeholder="Enter details here..."><?= htmlspecialchars($details); ?></textarea>
                         </div>
                     </div>
-
                 </div>
 
 
                 <button class="btn btn-primary">Submit</button>
+            </div>
         </form>
-        <!-- end col -->
     </div>
-    <!-- end row -->
 </div>
-<!-- container -->
 
 
 <!-- <footer class="footer text-center text-sm-start d-print-none">
@@ -315,58 +354,58 @@ $(document).ready(function() {
     }
 
     // Function to calculate the grand total
-   // Function to calculate the grand total
-function calculateGrandTotal() {
-    var grandTotal = 0;
-    var discount = 0;
-    var orderTax = 0;
-    var shippingCost = parseFloat($('#shipping_input').val()) || 0;
-    var discountValue = parseFloat($('#discount_input').val()) || 0;
-    var discountType = $('#discount_type_input').val();
-    var taxPercentage = parseFloat($('#order_tax_input').val()) || 0;
+    // Function to calculate the grand total
+    function calculateGrandTotal() {
+        var grandTotal = 0;
+        var discount = 0;
+        var orderTax = 0;
+        var shippingCost = parseFloat($('#shipping_input').val()) || 0;
+        var discountValue = parseFloat($('#discount_input').val()) || 0;
+        var discountType = $('#discount_type_input').val();
+        var taxPercentage = parseFloat($('#order_tax_input').val()) || 0;
 
-    // Loop through each row to calculate the grand total before discount and tax
-    $('#purchase_body tr').each(function() {
-        var subtotal = parseFloat($(this).find('.sub-total').val()) || 0;
-        grandTotal += subtotal;
-    });
+        // Loop through each row to calculate the grand total before discount and tax
+        $('#purchase_body tr').each(function() {
+            var subtotal = parseFloat($(this).find('.sub-total').val()) || 0;
+            grandTotal += subtotal;
+        });
 
-    // Apply discount based on the discount type
-    if (discountType === 'fixed') {
-        discount = discountValue;
-    } else if (discountType === 'percent') {
-        discount = (discountValue * grandTotal) / 100;
+        // Apply discount based on the discount type
+        if (discountType === 'fixed') {
+            discount = discountValue;
+        } else if (discountType === 'percent') {
+            discount = (discountValue * grandTotal) / 100;
+        }
+
+        grandTotal -= discount; // Subtract the discount from the grand total
+
+        // Apply shipping cost
+        grandTotal += shippingCost;
+
+        // Apply tax
+        orderTax = (taxPercentage * grandTotal) / 100;
+        grandTotal += orderTax;
+
+        // Update the grand total display and hidden input
+        $('#grand_total_display').text('Ugx ' + grandTotal.toFixed(2));
+        $('input[name="grand_total"]').val(grandTotal.toFixed(
+        2)); // Update the hidden input with the grand total
+
+        // Update the order summary
+        $('#order_tax_display').text('Ugx ' + orderTax.toFixed(2) + ' (' + taxPercentage + '%)');
+        $('#discount_display').text('Ugx ' + discount.toFixed(2));
+        $('#shipping_display').text('Ugx ' + shippingCost.toFixed(2));
     }
 
-    grandTotal -= discount; // Subtract the discount from the grand total
+    // Event listener for discount input
+    $('#discount_input, #discount_type_input').on('input change', function() {
+        calculateGrandTotal();
+    });
 
-    // Apply shipping cost
-    grandTotal += shippingCost;
-
-    // Apply tax
-    orderTax = (taxPercentage * grandTotal) / 100;
-    grandTotal += orderTax;
-
-    // Update the grand total display and hidden input
-    $('#grand_total_display').text('Ugx ' + grandTotal.toFixed(2));
-    $('input[name="grand_total"]').val(grandTotal.toFixed(2)); // Update the hidden input with the grand total
-    $('input[name="due"]').val(grandTotal.toFixed(2)); // Update the hidden input with the grand total
-
-    // Update the order summary
-    $('#order_tax_display').text('Ugx ' + orderTax.toFixed(2) + ' (' + taxPercentage + '%)');
-    $('#discount_display').text('Ugx ' + discount.toFixed(2));
-    $('#shipping_display').text('Ugx ' + shippingCost.toFixed(2));
-}
-
-// Event listener for discount input
-$('#discount_input, #discount_type_input').on('input change', function() {
-    calculateGrandTotal();
-});
-
-// Event listener for tax and shipping input
-$('#order_tax_input, #shipping_input').on('input', function() {
-    calculateGrandTotal();
-});
+    // Event listener for tax and shipping input
+    $('#order_tax_input, #shipping_input').on('input', function() {
+        calculateGrandTotal();
+    });
 
 
     // Event listener for discount input
